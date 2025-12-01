@@ -9,17 +9,6 @@ A modern e-commerce starter app built with **Next.js 13**, **Prisma v5**, **Next
 
 ---
 
-## Table of Contents
-
-- [Technologies](#technologies)  
-- [Features](#features)  
-- [Getting Started](#getting-started)  
-- [Folder Structure](#folder-structure)  
-- [Commands](#commands)  
-- [Future Improvements](#future-improvements)  
-
----
-
 ## Technologies
 
 - **Frontend & Backend:** Next.js 13 (App Router)  
@@ -32,21 +21,11 @@ A modern e-commerce starter app built with **Next.js 13**, **Prisma v5**, **Next
 
 ---
 
-## Features
-
-- Google, Facebook, and Guest login  
-- Prisma-managed database with Users, Accounts, Sessions, Products, Variants, Images, and Options  
-- Tailwind CSS styled UI  
-- Singleton PrismaClient for safe hot reloading  
-- Modular, production-ready architecture  
-
----
-
 ## Getting Started
 
 ### 1. Clone & Install
 
 ```bash
-git clone <repo-url>
+git clone <YOUR_URL_HERE>
 cd shop-app
 npm install
