@@ -1,36 +1,80 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+Simple Shopify App
 
-## Getting Started
+A modern e-commerce starter app built with Next.js 13, Prisma v5, NextAuth, and SQLite, featuring Google, Facebook, and Guest authentication.
 
-First, run the development server:
+Tech Stack
 
-```bash
+Frontend & Backend: Next.js 13 (App Router)
+
+Authentication: NextAuth.js (OAuth + Guest login)
+
+Database ORM: Prisma v5
+
+Database: SQLite (local development)
+
+Styling: Tailwind CSS
+
+Language: TypeScript
+
+Version Control: Git
+
+Features
+
+Google, Facebook, and Guest login
+
+Prisma-managed database with Users, Accounts, Sessions, Products, Variants, Images, and Options
+
+Tailwind CSS styled UI
+
+Singleton PrismaClient for safe hot reloading
+
+Modular, production-ready structure
+
+Getting Started
+1. Clone & Install
+git clone <repo-url>
+cd shop-app
+npm install
+
+2. Setup Environment Variables
+
+Create .env:
+
+NEXTAUTH_URL=http://localhost:3000
+
+GOOGLE_CLIENT_ID=your_google_client_id
+GOOGLE_CLIENT_SECRET=your_google_client_secret
+
+FACEBOOK_CLIENT_ID=your_facebook_client_id
+FACEBOOK_CLIENT_SECRET=your_facebook_client_secret
+
+DATABASE_URL="file:./dev.db"
+
+3. Initialize Database
+npx prisma generate
+npx prisma db push
+
+4. Start Development Server
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+Open http://localhost:3000/auth/signin
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+to test authentication.
 
-## Learn More
+Folder Structure
+app/
+  auth/signin/page.tsx         # SignIn page
+  api/auth/[...nextauth]/route.ts   # NextAuth API route
+lib/prisma.ts                  # Prisma client
+prisma/schema.prisma           # Database schema
+.env                            # Environment variables
 
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+Commands
+Command	Description
+npm run dev	Start dev server
+npm run build	Build production app
+npm start	Start production server
+npx prisma generate	Generate Prisma client
+npx prisma db push	Apply schema to database
+npx prisma studio	Open database GUI

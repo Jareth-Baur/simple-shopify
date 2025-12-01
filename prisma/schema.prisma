@@ -1,0 +1,114 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url = env("DATABASE_URL")
+}
+
+model User {
+  id            String   @id @default(cuid())
+  name          String?
+  email         String?  @unique
+  emailVerified DateTime?
+  image         String?
+  accounts      Account[]
+  sessions      Session[]
+}
+
+model Account {
+  id                String  @id @default(cuid())
+  userId            String
+  type              String
+  provider          String
+  providerAccountId String
+  refresh_token     String?
+  access_token      String?
+  expires_at        Int?
+  token_type        String?
+  scope             String?
+  session_state     String?
+
+  user User @relation(fields: [userId], references: [id])
+
+  @@unique([provider, providerAccountId])
+}
+
+model Session {
+  id           String   @id @default(cuid())
+  sessionToken String   @unique
+  userId       String
+  expires      DateTime
+  user         User     @relation(fields: [userId], references: [id])
+}
+
+model Product {
+  id           String      @id @default(cuid())
+  title        String
+  body_html    String?
+  vendor       String?
+  product_type String?
+  created_at   DateTime    @default(now())
+  published_at DateTime?
+  status       String?     @default("active")
+
+  images       Image[]
+  options      Option[]
+  variants     Variant[]
+  tags         ProductTag[]
+}
+
+model ProductTag {
+  id        String   @id @default(cuid())
+  name      String
+  product   Product  @relation(fields: [productId], references: [id])
+  productId String
+}
+
+model Image {
+  id        String   @id @default(cuid())
+  src       String
+  alt       String?
+  width     Int?
+  height    Int?
+  product   Product  @relation(fields: [productId], references: [id])
+  productId String
+}
+
+model Option {
+  id        String        @id @default(cuid())
+  name      String
+  product   Product       @relation(fields: [productId], references: [id])
+  productId String
+  values    OptionValue[]
+}
+
+model OptionValue {
+  id        String   @id @default(cuid())
+  value     String
+  option    Option   @relation(fields: [optionId], references: [id])
+  optionId  String
+}
+
+model Variant {
+  id                 String            @id @default(cuid())
+  sku                String?
+  title              String?
+  price              Float
+  compare_at_price   Float?
+  inventory_quantity Int?
+  requires_shipping  Boolean?          @default(true)
+  taxable            Boolean?          @default(true)
+
+  product            Product           @relation(fields: [productId], references: [id])
+  productId          String
+  optionValues       VariantOptionValue[]
+}
+
+model VariantOptionValue {
+  id        String   @id @default(cuid())
+  value     String
+  variant   Variant  @relation(fields: [variantId], references: [id])
+  variantId String
+}
