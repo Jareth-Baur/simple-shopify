@@ -1,80 +1,52 @@
-Simple Shopify App
+# ![Simple Shopify App](https://img.shields.io/badge/Simple-Shopify-blue?style=flat-square) Simple Shopify App
 
-A modern e-commerce starter app built with Next.js 13, Prisma v5, NextAuth, and SQLite, featuring Google, Facebook, and Guest authentication.
+A modern e-commerce starter app built with **Next.js 13**, **Prisma v5**, **NextAuth**, and **SQLite**, featuring Google, Facebook, and Guest authentication.
 
-Tech Stack
+[![Next.js](https://img.shields.io/badge/Next.js-13-black?style=flat-square&logo=nextdotjs)](https://nextjs.org/)  
+[![Prisma](https://img.shields.io/badge/Prisma-v5-blue?style=flat-square&logo=prisma)](https://www.prisma.io/)  
+[![Tailwind CSS](https://img.shields.io/badge/TailwindCSS-3-blue?style=flat-square&logo=tailwind-css)](https://tailwindcss.com/)  
+[![NextAuth](https://img.shields.io/badge/NextAuth.js-4-blue?style=flat-square)](https://next-auth.js.org/)  
 
-Frontend & Backend: Next.js 13 (App Router)
+---
 
-Authentication: NextAuth.js (OAuth + Guest login)
+## Table of Contents
 
-Database ORM: Prisma v5
+- [Technologies](#technologies)  
+- [Features](#features)  
+- [Getting Started](#getting-started)  
+- [Folder Structure](#folder-structure)  
+- [Commands](#commands)  
+- [Future Improvements](#future-improvements)  
 
-Database: SQLite (local development)
+---
 
-Styling: Tailwind CSS
+## Technologies
 
-Language: TypeScript
+- **Frontend & Backend:** Next.js 13 (App Router)  
+- **Authentication:** NextAuth.js (OAuth + Guest login)  
+- **Database ORM:** Prisma v5  
+- **Database:** SQLite (local development)  
+- **Styling:** Tailwind CSS  
+- **Language:** TypeScript  
+- **Version Control:** Git  
 
-Version Control: Git
+---
 
-Features
+## Features
 
-Google, Facebook, and Guest login
+- Google, Facebook, and Guest login  
+- Prisma-managed database with Users, Accounts, Sessions, Products, Variants, Images, and Options  
+- Tailwind CSS styled UI  
+- Singleton PrismaClient for safe hot reloading  
+- Modular, production-ready architecture  
 
-Prisma-managed database with Users, Accounts, Sessions, Products, Variants, Images, and Options
+---
 
-Tailwind CSS styled UI
+## Getting Started
 
-Singleton PrismaClient for safe hot reloading
+### 1. Clone & Install
 
-Modular, production-ready structure
-
-Getting Started
-1. Clone & Install
+```bash
 git clone <repo-url>
 cd shop-app
 npm install
-
-2. Setup Environment Variables
-
-Create .env:
-
-NEXTAUTH_URL=http://localhost:3000
-
-GOOGLE_CLIENT_ID=your_google_client_id
-GOOGLE_CLIENT_SECRET=your_google_client_secret
-
-FACEBOOK_CLIENT_ID=your_facebook_client_id
-FACEBOOK_CLIENT_SECRET=your_facebook_client_secret
-
-DATABASE_URL="file:./dev.db"
-
-3. Initialize Database
-npx prisma generate
-npx prisma db push
-
-4. Start Development Server
-npm run dev
-
-
-Open http://localhost:3000/auth/signin
-
-to test authentication.
-
-Folder Structure
-app/
-  auth/signin/page.tsx         # SignIn page
-  api/auth/[...nextauth]/route.ts   # NextAuth API route
-lib/prisma.ts                  # Prisma client
-prisma/schema.prisma           # Database schema
-.env                            # Environment variables
-
-Commands
-Command	Description
-npm run dev	Start dev server
-npm run build	Build production app
-npm start	Start production server
-npx prisma generate	Generate Prisma client
-npx prisma db push	Apply schema to database
-npx prisma studio	Open database GUI
