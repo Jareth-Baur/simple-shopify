@@ -8,14 +8,16 @@ datasource db {
 }
 
 model User {
-  id            String   @id @default(cuid())
+  id            String    @id @default(cuid())
   name          String?
-  email         String?  @unique
+  email         String?   @unique
   emailVerified DateTime?
   image         String?
   accounts      Account[]
   sessions      Session[]
+  role          String    @default("user")
 }
+
 
 model Account {
   id                String  @id @default(cuid())
@@ -62,7 +64,7 @@ model Product {
 model ProductTag {
   id        String   @id @default(cuid())
   name      String
-  product   Product  @relation(fields: [productId], references: [id])
+  product   Product  @relation(fields: [productId], references: [id], onDelete: Cascade)
   productId String
 }
 
@@ -72,18 +74,17 @@ model Image {
   alt       String?
   width     Int?
   height    Int?
-  product   Product  @relation(fields: [productId], references: [id])
+  product   Product  @relation(fields: [productId], references: [id], onDelete: Cascade)
   productId String
 }
 
 model Option {
   id        String        @id @default(cuid())
   name      String
-  product   Product       @relation(fields: [productId], references: [id])
+  product   Product       @relation(fields: [productId], references: [id], onDelete: Cascade)
   productId String
   values    OptionValue[]
 }
-
 model OptionValue {
   id        String   @id @default(cuid())
   value     String
@@ -101,7 +102,7 @@ model Variant {
   requires_shipping  Boolean?          @default(true)
   taxable            Boolean?          @default(true)
 
-  product            Product           @relation(fields: [productId], references: [id])
+  product            Product           @relation(fields: [productId], references: [id], onDelete: Cascade)
   productId          String
   optionValues       VariantOptionValue[]
 }
