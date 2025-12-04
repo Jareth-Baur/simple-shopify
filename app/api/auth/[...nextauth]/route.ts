@@ -6,6 +6,7 @@ import { prisma } from "@/lib/prisma";
 
 export const authOptions: NextAuthOptions = {
   adapter: PrismaAdapter(prisma),
+
   providers: [
     GoogleProvider({
       clientId: process.env.GOOGLE_CLIENT_ID!,
@@ -16,21 +17,43 @@ export const authOptions: NextAuthOptions = {
       clientSecret: process.env.FACEBOOK_CLIENT_SECRET!,
     }),
   ],
+
+  // ✅ CUSTOM SIGN-IN PAGE (kept, but safe)
   pages: {
     signIn: "/auth/signin",
   },
+
   session: {
     strategy: "database",
   },
+
   callbacks: {
-    async signIn({ user, account, profile }) {
-      // Try to find an existing user by email
+    // ✨ FIX: Prevent redirect loop from Google/Facebook
+    redirect({ url, baseUrl }) {
+      // Never redirect back to sign-in page or it loops
+      if (url.includes("/auth/signin")) return baseUrl;
+
+      // Internal redirect
+      if (url.startsWith("/")) return `${baseUrl}${url}`;
+
+      // Same origin redirect
+      try {
+        if (new URL(url).origin === baseUrl) return url;
+      } catch {
+        return baseUrl;
+      }
+
+      // Default fallback
+      return baseUrl;
+    },
+
+    async signIn({ user, account }) {
+      // If user already exists, link provider accounts safely
       const existingUser = await prisma.user.findUnique({
         where: { email: user.email! },
       });
 
       if (existingUser) {
-        // Link the account to the existing user
         await prisma.account.upsert({
           where: {
             provider_providerAccountId: {
@@ -52,19 +75,17 @@ export const authOptions: NextAuthOptions = {
             session_state: account.session_state,
           },
         });
-
-        return true;
       }
 
-      // If no existing user, allow normal sign-up
       return true;
     },
+
     async session({ session, user }) {
+      // Add user.role to session
       session.user.role = user.role;
       return session;
     },
   },
-
 };
 
 const handler = NextAuth(authOptions);
