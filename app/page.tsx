@@ -22,6 +22,14 @@ export default function HomePage() {
               Products
             </Link>
             <AuthButton />
+            <div className="flex items-center gap-6">
+            <Link
+              href="/admin/suppliers"
+              className="text-sm font-medium text-gray-700 hover:text-indigo-600 transition"
+            >
+              Suppliers
+            </Link>
+            <AuthButton />
           </div>
         </nav>
 
