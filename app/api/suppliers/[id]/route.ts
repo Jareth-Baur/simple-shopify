@@ -1,26 +1,42 @@
 import { prisma } from "@/lib/prisma";
 import { NextResponse } from "next/server";
 
-export async function PUT(req: Request, { params }: { params: { id: string } }) {
-  try {
-    const id = params.id;
-    const data = await req.json();
+// UPDATE a supplier
+export async function PUT(
+  req: Request,
+  context: { params: Promise<{ id: string }> } // params is a Promise
+) {
+  // ✅ unwrap the promise first
+  const { id } = await context.params;
+  if (!id) {
+    return NextResponse.json(
+      { error: "Supplier ID required" },
+      { status: 400 }
+    );
+  }
 
-    const updated = await prisma.supplier.update({
+  try {
+    const body = await req.json();
+
+    const updatedSupplier = await prisma.supplier.update({
       where: { id },
       data: {
-        name: data.name,
-        contact: data.contact,
-        address: data.address,
+        name: body.name,
+        contact: body.contact,
+        address: body.address,
       },
     });
 
-    return NextResponse.json(updated);
-  } catch (err: any) {
-    console.error("PUT ERROR:", err);
-    return NextResponse.json({ error: err.message }, { status: 400 });
+    return NextResponse.json(updatedSupplier);
+  } catch (error: any) {
+    console.error("PUT /api/suppliers/[id] error:", error);
+    return NextResponse.json(
+      { error: error.message || "Failed to update supplier" },
+      { status: 500 }
+    );
   }
 }
+
 
 export async function GET(req: Request, { params }: { params: { id: string } }) {
   try {
@@ -32,11 +48,28 @@ export async function GET(req: Request, { params }: { params: { id: string } }) 
   }
 }
 
-export async function DELETE(req: Request, { params }: { params: { id: string } }) {
+// DELETE a supplier
+export async function DELETE(
+  req: Request,
+  context: { params: Promise<{ id: string }> } // params is a Promise
+) {
+  // ✅ unwrap the promise first
+  const { id } = await context.params;
+  if (!id) {
+    return NextResponse.json(
+      { error: "Supplier ID required" },
+      { status: 400 }
+    );
+  }
+
   try {
-    await prisma.supplier.delete({ where: { id: params.id } });
+    await prisma.supplier.delete({ where: { id } });
     return NextResponse.json({ message: "Deleted" });
-  } catch (err: any) {
-    return NextResponse.json({ error: err.message }, { status: 500 });
+  } catch (error: any) {
+    console.error("DELETE /api/suppliers/[id] error:", error);
+    return NextResponse.json(
+      { error: error.message || "Failed to delete supplier" },
+      { status: 500 }
+    );
   }
 }
