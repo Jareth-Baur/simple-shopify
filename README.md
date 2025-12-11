@@ -26,6 +26,6 @@ A modern e-commerce starter app built with **Next.js 13**, **Prisma v5**, **Next
 ### 1. Clone & Install
 
 ```bash
-git clone <YOUR_URL_HERE>
+git clone https://github.com/Jareth-Baur/simple-shopify.git
 cd shop-app
 npm install
